@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lilnex <lilnex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:52:46 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/07/27 23:32:04 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/02 15:47:40 by lilnex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
-
 
 
 int main(int argc, char **av)
@@ -22,6 +21,8 @@ int main(int argc, char **av)
 	if (argc >=4)
 	{
 		parse_args(av, config);
+		validate_args(config);
+		create_philos(config);
 	}
 	else
 		printf("You must give minimum of args\n");

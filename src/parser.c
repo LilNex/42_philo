@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lilnex <lilnex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:53:25 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/07/27 23:37:16 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/01 17:24:15 by lilnex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ int validate_param(char *str)
 }
 
 int validate_args(t_config *config)
+{
+    print_config(config);
+    return (1);
+}
+
+
 
 void parse_args(char **args, t_config *config)
 {
@@ -35,7 +41,7 @@ void parse_args(char **args, t_config *config)
 
 	i = 1;
 	while (args[i])
-        if (!validate_param(args[i]))
+        if (!validate_param(args[i++]))
             return ;
     
     
