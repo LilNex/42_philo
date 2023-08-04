@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lilnex <lilnex@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:53:25 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/01 17:24:15 by lilnex           ###   ########.fr       */
+/*   Updated: 2023/08/03 00:23:39 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ void parse_args(char **args, t_config *config)
     
     
 	config->num_philos = ft_atoi(args[1]);
-    config->time_eat = ft_atoi(args[2]);
-    config->time_sleep = ft_atoi(args[3]);
-    config->time_think = ft_atoi(args[4]);
+    config->time_die = ft_atoi(args[2]);
+    config->time_eat = ft_atoi(args[3]);
+    config->time_sleep = ft_atoi(args[4]);
 }
 

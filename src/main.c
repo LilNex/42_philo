@@ -3,21 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lilnex <lilnex@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:52:46 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/02 15:47:40 by lilnex           ###   ########.fr       */
+/*   Updated: 2023/08/03 00:03:35 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
 
+t_config *init_config()
+{
+	t_config	*config;
+	
+	config = ft_calloc(1, sizeof(t_config));
+	if (!config)
+		return (config);
+	pthread_mutex_init(&config->print, NULL);
+	pthread_mutex_init(&config->dead, NULL);
+	return (config);
+}
+
 int main(int argc, char **av)
 {
 	t_config *config;
 	
-	config = ft_calloc(1, sizeof(t_config));
+	config = init_config();
+	
 	if (argc >=4)
 	{
 		parse_args(av, config);
@@ -26,6 +39,4 @@ int main(int argc, char **av)
 	}
 	else
 		printf("You must give minimum of args\n");
- 
-
 }
