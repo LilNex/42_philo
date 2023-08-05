@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:16:32 by lilnex            #+#    #+#             */
-/*   Updated: 2023/08/04 20:41:38 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/05 00:40:53 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void print_config(t_config *config)
     printf("time die :    %d\n", config->time_die);
 }
 
-long long get_current_tick(t_config *config, struct timeval time)
+long long get_time_exec(t_config *config, struct timeval time)
 {
     long long   result;
 
@@ -30,6 +30,8 @@ long long get_current_tick(t_config *config, struct timeval time)
                 // + (time.tv_sec - config->start_date.tv_usec) / 1000;
     // result = (time.tv_sec * 1000 + config->start_date.tv_usec);
     result = to_ms(time) - to_ms(config->start_date);
+    // printf("time : %lld\n",  to_ms(time));
+    // printf("start date : %lld\n",  to_ms(config->start_date));
 
     return (result);    
         
@@ -39,22 +41,64 @@ long long to_ms(struct timeval datetime)
 {
     return (datetime.tv_sec * 1000 + datetime.tv_usec / 1000);
 }
+// void	ft_usleep(long long time_in_ms)
+// {
+// 	struct timeval	current_time;
+// 	struct timeval	start_time;
+// 	long long		start_micros;
+// 	long long		current_micros;
 
-void ft_usleep(long long usec)
+//     time_in_ms = time_in_ms / 1000;
+// 	gettimeofday(&start_time, NULL);
+// 	start_micros = (start_time.tv_sec * (long long)1000000) + start_time.tv_usec;
+
+// 	while (1)
+// 	{
+// 		gettimeofday(&current_time, NULL);
+// 		current_micros = (current_time.tv_sec * (long long)1000000) + current_time.tv_usec;
+// 		if ((current_micros - start_micros) >= time_in_ms * 1000)
+// 			break;
+// 		usleep(100);
+// 	}
+// }
+// void ft_usleep(long long usec)
+// {
+//     struct timeval now;
+
+//     gettimeofday(&now, NULL);
+//     usleep(usec);
+// }
+
+
+void ft_usleep(long long time_in_ms)
 {
-    struct timeval now;
+    struct timespec start_time, current_time;
+    long long start_ns, current_ns;
+    time_in_ms = time_in_ms / 1000;
 
-    gettimeofday(&now, NULL);
-    usleep(usec);
+    clock_gettime(CLOCK_MONOTONIC, &start_time);
+    start_ns = (start_time.tv_sec * 1000000000LL) + start_time.tv_nsec;
+
+    while (1)
+    {
+        clock_gettime(CLOCK_MONOTONIC, &current_time);
+        current_ns = (current_time.tv_sec * 1000000000LL) + current_time.tv_nsec;
+        if ((current_ns - start_ns) >= time_in_ms * 1000000LL)
+            break;
+        usleep(50);
+    }
+
 }
 
 void print_log(t_philo *philo, char *str)
 {
     struct timeval date_now;
-    long long time;
+    // long long time;
 
     gettimeofday(&date_now, NULL);
-    time = get_current_tick(philo->config, date_now);
+    // time = get_time_exec(philo->config, date_now);
     // printf("res of tick : %lld\n", time);
-    printf("%lld | philo %d %s\n", time, philo->num, str);
+    printf("%lld | philo %d %s\n",
+            to_ms(date_now) - to_ms(philo->config->start_date),
+            philo->num, str);
 }

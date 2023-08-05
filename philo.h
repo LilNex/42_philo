@@ -41,14 +41,15 @@ typedef struct s_config{
 
 // UTILS
 void		print_config(t_config *config);
-long long	get_current_tick(t_config *config, struct timeval time);
+long long	get_time_exec(t_config *config, struct timeval time);
 long long	to_ms(struct timeval datetime);
 void		print_log(t_philo *philo, char *str);
 
 
-
-void *philo_routine(void *conf);
-void ft_usleep(long long usec);
+void		philo_sleep(t_philo *philo);
+void		take_fork(t_philo *philo);
+void		*philo_routine(void *conf);
+void		ft_usleep(long long usec);
 
 // ARGS
 int			validate_param(char *str);
