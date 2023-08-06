@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:32:01 by lilnex            #+#    #+#             */
-/*   Updated: 2023/08/06 03:12:38 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/06 17:34:47 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,46 +32,6 @@ t_philo *init_philo(t_config *conf, int i)
 		return p;
 }
 
-void thread_checker(t_config *conf)
-{
-	int	i;
-	t_philo *philo;
-	struct timeval date_now;
-
-	i = 0;
-	while (1)
-	{
-		gettimeofday(&date_now, NULL);
-		while (i < conf->num_philos)
-		{
-			philo = conf->philos[i];
-			// printf("diff : %lld\n",(to_ms(date_now) - to_ms(philo->last_eaten)));
-			pthread_mutex_lock(&philo->mut_last_eaten);
-			int diff = to_ms(date_now) - to_ms(philo->last_eaten);
-			pthread_mutex_unlock(&philo->mut_last_eaten);
-			
-			if ((diff > 0) && diff > conf->time_die){
-				
-				pthread_mutex_lock(&conf->dead);
-				// pthread_mutex_lock(&conf->print);
-				conf->died = 1;
-				// printf("PHILO %d HAS DIED !!!!\n", philo->num);
-				// pthread_mutex_unlock(&conf->print);
-				print_log(philo, "has died");
-				// pthread_mutex_unlock(&conf->dead);
-				printf("diff : %d\n",(diff));
-				// printf("last eaten : %lld\n",to_ms(philo->last_eaten));
-				// printf("now : %lld\n",to_ms(date_now));
-				ft_usleep(200000);
-			}
-			i++;
-		}
-		if(i >= conf->num_philos)
-			i = 0;
-		
-	}
-	
-}
 
 void join_philos(t_config *conf)
 {
@@ -85,6 +45,8 @@ void join_philos(t_config *conf)
 	{
 		philo = conf->philos[count++];
 		gettimeofday(&philo->start_date, NULL);
+		gettimeofday(&conf->start_date, NULL);
+		gettimeofday(&conf->start_date, NULL);
 		pthread_create(&philo->thread, NULL, &philo_routine, philo);
 		// pthread_detach(philo->thread);
 		// usleep(50);

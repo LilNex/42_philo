@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 19:29:29 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/06 03:12:49 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/06 17:34:27 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ void *philo_routine(void *conf)
 	philo = (t_philo *)conf;
 	while (1)
 	{
-		pthread_mutex_lock(&philo->config->dead);
-		if (philo->config->died)
-			break;
-		pthread_mutex_unlock(&philo->config->dead);
+		// pthread_mutex_lock(&philo->config->dead);
+		// if (philo->config->died)
+		// 	break;
+		// pthread_mutex_unlock(&philo->config->dead);
 		if (philo->num % 2 == 0)
 			take_fork(philo);
 		// else take_fork(philo);
