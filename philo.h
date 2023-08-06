@@ -21,6 +21,7 @@ typedef struct s_philo{
 
 	pthread_mutex_t	fork;
 	pthread_mutex_t	eat;
+	pthread_mutex_t	mut_last_eaten;
 	// pthread_mutex_t	*fork;
 	// pthread_mutex_t	*fork;
 
@@ -34,6 +35,7 @@ typedef struct s_config{
 	int time_die;
 	pthread_mutex_t	print;
 	pthread_mutex_t	dead;
+	int	died;
 	struct timeval start_date;
 	t_philo **philos;
 }           t_config;
@@ -50,6 +52,7 @@ void		philo_sleep(t_philo *philo);
 void		take_fork(t_philo *philo);
 void		*philo_routine(void *conf);
 void		ft_usleep(long long usec);
+void 			print_log_rev(t_philo *philo, char *str, struct timeval date_now);
 
 // ARGS
 int			validate_param(char *str);

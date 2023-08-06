@@ -1,6 +1,6 @@
 NAME = philo
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra -g -fsanitize=thread
 SRCDIR = src
 OBJDIR = obj
 SRCS = $(shell find $(SRCDIR) -type f -name '*.c')
