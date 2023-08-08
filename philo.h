@@ -46,13 +46,16 @@ void		print_config(t_config *config);
 long long	get_time_exec(t_config *config, struct timeval time);
 long long	to_ms(struct timeval datetime);
 void		print_log(t_philo *philo, char *str);
-void		thread_checker(t_config *conf);
+void *thread_checker(void *conf);
 
 
 void		philo_sleep(t_philo *philo);
 void		take_fork(t_philo *philo);
 void		*philo_routine(void *conf);
-void		ft_usleep(long long usec);
+// void		ft_usleep(long long usec);
+
+int	ft_usleep(useconds_t time);
+
 void 			print_log_rev(t_philo *philo, char *str, struct timeval date_now);
 
 // ARGS

@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 19:29:29 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/08 17:10:43 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/09 00:38:46 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@ void take_fork(t_philo *philo)
 	// pthread_mutex_unlock(&philo->config->print);
 	pthread_mutex_lock(&philo->fork);
 	pthread_mutex_lock(&philo->config->philos[(philo->num + 1) % philo->config->num_philos]->fork);
-	pthread_mutex_lock(&philo->mut_last_eaten);
 	// pthread_mutex_lock(&philo->config->print);
 	print_log(philo, "has taken fork");
+	pthread_mutex_lock(&philo->mut_last_eaten);
 	gettimeofday(&philo->last_eaten, NULL);
-	print_log(philo, "is eating");
 	pthread_mutex_unlock(&philo->mut_last_eaten);
 	// pthread_mutex_unlock(&philo->config->print);
-	ft_usleep(philo->config->time_eat * 1000);
+	print_log(philo, "is eating");
+	ft_usleep(philo->config->time_eat);
 	pthread_mutex_unlock(&philo->config->philos[(philo->num + 1) % philo->config->num_philos]->fork);
 	pthread_mutex_unlock(&philo->fork);
 }
@@ -36,7 +36,7 @@ void philo_sleep(t_philo *philo)
 {
 	print_log(philo, "is sleeping");
 	// printf("philo %d sleeping\n", philo->num);
-	ft_usleep(philo->config->time_sleep * 1000);
+	ft_usleep(philo->config->time_sleep);
 }
 
 
