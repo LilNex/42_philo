@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:16:32 by lilnex            #+#    #+#             */
-/*   Updated: 2023/08/06 19:29:40 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/08 16:31:50 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,15 @@ long long get_time_exec(t_config *config, struct timeval time)
 
 long long to_ms(struct timeval datetime)
 {
-    return (datetime.tv_sec * 1000 + datetime.tv_usec / 1000);
+    return (datetime.tv_sec * 1000 + (datetime.tv_usec / 1000));
+}
+
+long long get_current_tick()
+{
+    struct timeval  datenow;
+
+    gettimeofday(&datenow, NULL);
+    return to_ms(datenow);
 }
 
 void	ft_usleep(long long usec)
@@ -60,7 +68,7 @@ void	ft_usleep(long long usec)
 		current_micros = (current_time.tv_sec * (long long)1000000) + current_time.tv_usec;
 		if ((current_micros - start_micros) >= ms * 1000)
 			break;
-		usleep(5);
+		usleep(20);
 	}
 }
 // void ft_usleep(long long usec)
@@ -102,7 +110,7 @@ void print_log(t_philo *philo, char *str)
     gettimeofday(&date_now, NULL);
     pthread_mutex_lock(&philo->config->print);
     printf("%lld | philo %d %s\n",
-            to_ms(date_now) - to_ms(philo->start_date),
+            get_current_tick() - philo->config->start_tick,
             philo->num, str);
     pthread_mutex_unlock(&philo->config->print);
 }

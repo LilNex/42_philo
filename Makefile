@@ -11,7 +11,7 @@ LIB = libft/libft.a
 .PHONY: all clean fclean re
 
 all: $(NAME)
-	./philo 4 410 200 200
+	./philo 3 410 200 200
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLUD)
 	@mkdir -p $(@D)

@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:32:01 by lilnex            #+#    #+#             */
-/*   Updated: 2023/08/06 19:25:58 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/08 16:36:04 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,21 @@ void join_philos(t_config *conf)
 
 	count = 0;
 	gettimeofday(&conf->start_date, NULL);
+	conf->start_tick = get_current_tick();
 	while (count < conf->num_philos)
 	{
 		philo = conf->philos[count++];
-		gettimeofday(&philo->start_date, NULL);
-		pthread_mutex_lock(&philo->mut_eaten);
+		// gettimeofday(&philo->start_date, NULL);
+		// philo->start_date = get_current_tick();
+		// pthread_mutex_lock(&philo->mut_eaten);
+		philo->last_eaten = get_current_tick();
+		// pthread_mutex_unlock(&philo->mut_eaten);
+		
 		pthread_create(&philo->thread, NULL, &philo_routine, philo);
-		gettimeofday(&philo->last_eaten, NULL);
-		philo->last_eaten.tv_usec += conf->time_die * 1000;
-		pthread_mutex_unlock(&philo->mut_eaten);
+		pthread_detach(philo->thread);
+		// usleep(1);
+		// gettimeofday(&philo->last_eaten, NULL);
+		// philo->last_eaten.tv_usec += conf->time_die * 1000;
 		// usleep(1);
 		// printf("thread %d joined \n", count);
 	}

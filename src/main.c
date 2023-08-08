@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:52:46 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/06 19:28:57 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/08 16:33:53 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,26 @@ void thread_checker(t_config *conf)
 	int	i;
 	t_philo *philo;
 	struct timeval date_now;
+	long long		current_tick;
 
 	i = 0;
 	while (1)
 	{
 		gettimeofday(&date_now, NULL);
+		current_tick = get_current_tick();
 		while (i < conf->num_philos)
 		{
 			philo = conf->philos[i++];
 			// printf("diff : %lld\n",(to_ms(date_now) - to_ms(philo->last_eaten)));
 			pthread_mutex_lock(&philo->mut_eaten);
-			if ((to_ms(date_now) - to_ms(philo->last_eaten)) > conf->time_die)
+			if (current_tick > philo->last_eaten)
 			{
 				
 				printf("PHILO %d HAS DIED !!!!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", philo->num);
 				print_log(philo, "has died");
-				printf("diff : %lld\n",(to_ms(date_now) - to_ms(philo->last_eaten)));
-				// printf("last eaten : %lld\n",to_ms(philo->last_eaten));
-				// printf("now : %lld\n",to_ms(date_now));
+				printf("last eaten : %lld\n",philo->last_eaten);
+				printf("now : %lld\n",current_tick);
+				// printf("diff : %lld\n",(to_ms(date_now) - to_ms(philo->last_eaten)));
 				return ;
 				ft_usleep(200000);
 			}
