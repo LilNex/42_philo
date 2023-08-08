@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:52:46 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/06 17:30:22 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/08 17:06:12 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,10 @@ t_config *init_config()
 
 void thread_checker(t_config *conf)
 {
-	int	i;
-	t_philo *philo;
-	struct timeval date_now;
+	int				i;
+	t_philo			*philo;
+	struct timeval	date_now;
+	int				diff;
 
 	i = 0;
 	while (1)
@@ -41,19 +42,20 @@ void thread_checker(t_config *conf)
 			philo = conf->philos[i];
 			// printf("diff : %lld\n",(to_ms(date_now) - to_ms(philo->last_eaten)));
 			pthread_mutex_lock(&philo->mut_last_eaten);
-			int diff = to_ms(date_now) - to_ms(philo->last_eaten);
+			diff = to_ms(date_now) - to_ms(philo->last_eaten);
 			pthread_mutex_unlock(&philo->mut_last_eaten);
 			
 			if ((diff > 0) && diff > conf->time_die){
 				
 				pthread_mutex_lock(&conf->dead);
-				// pthread_mutex_lock(&conf->print);
 				conf->died = 1;
 				// printf("PHILO %d HAS DIED !!!!\n", philo->num);
 				// pthread_mutex_unlock(&conf->print);
 				print_log(philo, "has died");
 				// pthread_mutex_unlock(&conf->dead);
+				pthread_mutex_lock(&conf->print);
 				printf("diff : %d\n",(diff));
+				return ;
 				// printf("last eaten : %lld\n",to_ms(philo->last_eaten));
 				// printf("now : %lld\n",to_ms(date_now));
 				ft_usleep(200000);

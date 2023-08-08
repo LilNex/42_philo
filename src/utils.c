@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:16:32 by lilnex            #+#    #+#             */
-/*   Updated: 2023/08/06 03:06:33 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/08 17:15:15 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,12 @@ void	ft_usleep(long long time_in_ms)
 // }
 long int get_current_tick(struct timeval now, t_philo *philo)
 {
+    // printf("st diff : %lld\n",(to_ms(philo->start_date) - to_ms(philo->config->start_date)));
+    // return ((to_ms(now) - to_ms(philo->config->start_date)
+    //         )-(to_ms(philo->start_date) - to_ms(philo->config->start_date)));
+    // printf("st diff : %lld\n",(to_ms(philo->start_date) - to_ms(philo->config->start_date)));
     return ((to_ms(now) - to_ms(philo->config->start_date)
-            )-(to_ms(philo->start_date) - to_ms(philo->config->start_date)));
+            ));
 }
 
 void print_log(t_philo *philo, char *str)
@@ -100,10 +104,10 @@ void print_log(t_philo *philo, char *str)
     struct timeval date_now;
     // long long time;
 
-    gettimeofday(&date_now, NULL);
     // time = get_time_exec(philo->config, date_now);
     // printf("res of tick : %lld\n", time);
     pthread_mutex_lock(&philo->config->print);
+    gettimeofday(&date_now, NULL);
     printf("%ld | philo %d %s\n",
             get_current_tick(date_now, philo),
             philo->num, str);

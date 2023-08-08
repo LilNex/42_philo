@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:32:01 by lilnex            #+#    #+#             */
-/*   Updated: 2023/08/06 17:34:47 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/08 17:11:46 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,20 @@ void join_philos(t_config *conf)
 
 	count = 0;
 	// gettimeofday(&conf->start_date, NULL);
-		gettimeofday(&conf->start_date, NULL);
+	pthread_mutex_lock(&conf->dead);
 	while (count < conf->num_philos)
 	{
 		philo = conf->philos[count++];
-		gettimeofday(&philo->start_date, NULL);
-		gettimeofday(&conf->start_date, NULL);
-		gettimeofday(&conf->start_date, NULL);
 		pthread_create(&philo->thread, NULL, &philo_routine, philo);
+		gettimeofday(&philo->start_date, NULL);
 		// pthread_detach(philo->thread);
 		// usleep(50);
 		gettimeofday(&philo->last_eaten, NULL);
 		// printf("thread %d joined \n", count);
 		// count++;
 	}
+	pthread_mutex_unlock(&conf->dead);
+	gettimeofday(&conf->start_date, NULL);
 	thread_checker(conf);
 	
 	// pthread_join(conf->philos[0]->thread, NULL);

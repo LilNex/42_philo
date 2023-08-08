@@ -46,6 +46,7 @@ void		print_config(t_config *config);
 long long	get_time_exec(t_config *config, struct timeval time);
 long long	to_ms(struct timeval datetime);
 void		print_log(t_philo *philo, char *str);
+void		thread_checker(t_config *conf);
 
 
 void		philo_sleep(t_philo *philo);
