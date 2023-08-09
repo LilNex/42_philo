@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:16:32 by lilnex            #+#    #+#             */
-/*   Updated: 2023/08/09 00:39:36 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/09 04:31:51 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	ft_usleep(useconds_t time)
     // time = time*1000*1000;
 	start = get_time();
 	while ((get_time() - start) < time)
-		usleep(time / 100);
+		usleep(100);
 	return(0);
 }
 

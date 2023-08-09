@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 19:29:29 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/09 00:38:46 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/09 04:30:26 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ void take_fork(t_philo *philo)
 	pthread_mutex_lock(&philo->config->philos[(philo->num + 1) % philo->config->num_philos]->fork);
 	// pthread_mutex_lock(&philo->config->print);
 	print_log(philo, "has taken fork");
+	print_log(philo, "is eating");
+	// pthread_mutex_unlock(&philo->config->print);
+	ft_usleep(philo->config->time_eat);
 	pthread_mutex_lock(&philo->mut_last_eaten);
 	gettimeofday(&philo->last_eaten, NULL);
 	pthread_mutex_unlock(&philo->mut_last_eaten);
-	// pthread_mutex_unlock(&philo->config->print);
-	print_log(philo, "is eating");
-	ft_usleep(philo->config->time_eat);
 	pthread_mutex_unlock(&philo->config->philos[(philo->num + 1) % philo->config->num_philos]->fork);
 	pthread_mutex_unlock(&philo->fork);
 }
