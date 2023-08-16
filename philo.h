@@ -47,6 +47,7 @@ void		*thread_checker(void *conf);
 void		philo_sleep(t_philo *philo);
 void		take_fork(t_philo *philo);
 void		*philo_routine(void *conf);
+void		ft_exit(char *str);
 
 int			ft_usleep(useconds_t time);
 

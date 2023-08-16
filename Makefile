@@ -1,6 +1,6 @@
 NAME = philo
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra #-g -fsanitize=thread
+CFLAGS = -Wall -Werror -Wextra -g3 -fsanitize=thread
 SRCDIR = src
 OBJDIR = obj
 SRCS = $(shell find $(SRCDIR) -type f -name '*.c')
@@ -11,7 +11,7 @@ LIB = libft/libft.a
 .PHONY: all clean fclean re
 
 all: $(NAME)
-	./philo 4 410 200 200
+	./philo 4 200 200 200
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLUD)
 	@mkdir -p $(@D)

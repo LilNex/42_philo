@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:52:46 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/11 02:11:08 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/12 05:24:18 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,18 @@ void	join_thread_watcher(t_config *config)
 	pthread_join(monitor, NULL);
 }
 
-void f(void)
+void	ft_exit(char *str)
+{
+	t_list	**gcol;
+
+	gcol = get_gcollector();
+	if (str)
+		ft_putstr_fd(str, 2);
+	ft_lstiter(*gcol, ft_free);
+	exit(0);
+}
+
+void	f(void)
 {
 	system("leaks philo");
 }

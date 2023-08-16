@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:53:25 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/10 15:05:07 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/12 05:24:46 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ int	validate_param(char *str)
 
 int	validate_args(t_config *config)
 {
-	(void)config;
+	if (config->time_die <= 60 || config->time_eat <= 60
+		|| config->time_sleep <= 60)
+		return (ft_exit("Time shouldn't be less than 60ms\n"),0);
 	return (1);
 }
 
