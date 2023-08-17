@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 19:29:29 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/11 02:37:53 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/17 23:59:57 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	take_fork(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->config->dead);
+	pthread_mutex_unlock(&philo->config->dead);
 	print_log(philo, "is thinking");
 	pthread_mutex_lock(&philo->fork);
 	pthread_mutex_lock(&philo->config->philos[(philo->num + 1)
@@ -22,11 +24,29 @@ void	take_fork(t_philo *philo)
 	print_log(philo, "is eating");
 	pthread_mutex_lock(&philo->mut_last_eaten);
 	gettimeofday(&philo->last_eaten, NULL);
+	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->mut_last_eaten);
 	ft_usleep(philo->config->time_eat);
 	pthread_mutex_unlock(&philo->config->philos[(philo->num + 1)
 		% philo->config->num_philos]->fork);
 	pthread_mutex_unlock(&philo->fork);
+}
+
+int	routine_checker(t_philo *philo, struct timeval date_now)
+{
+	int	diff;
+
+	pthread_mutex_lock(&philo->mut_last_eaten);
+	diff = to_ms(date_now) - to_ms(philo->last_eaten);
+	pthread_mutex_unlock(&philo->mut_last_eaten);
+	if ((diff > 0) && diff > philo->config->time_die)
+	{
+		pthread_mutex_lock(&philo->config->dead);
+		print_log(philo, "has died");
+		pthread_mutex_lock(&philo->config->print);
+		return (0);
+	}
+	return (1);
 }
 
 void	philo_sleep(t_philo *philo)

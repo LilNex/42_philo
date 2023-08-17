@@ -18,6 +18,7 @@ typedef struct s_philo{
 	pthread_t		thread;
 	struct timeval	start_date;
 	struct timeval	last_eaten;
+	int				meals_eaten;
 	pthread_mutex_t	fork;
 	pthread_mutex_t	eat;
 	pthread_mutex_t	mut_last_eaten;
@@ -29,27 +30,25 @@ typedef struct s_config{
 	int				time_sleep;
 	int				time_eat;
 	int				time_die;
+	int				number_meals;
 	pthread_mutex_t	print;
 	pthread_mutex_t	dead;
-	int				died;
 	struct timeval	start_date;
 	t_philo			**philos;
 }					t_config;
-
-
 // UTILS
 void		print_config(t_config *config);
 long long	to_ms(struct timeval datetime);
 void		print_log(t_philo *philo, char *str);
 void		*thread_checker(void *conf);
-
-
+int			routine_checker(t_philo *philo, struct timeval date_now);
 void		philo_sleep(t_philo *philo);
 void		take_fork(t_philo *philo);
 void		*philo_routine(void *conf);
+int			is_all_meals_eaten(t_config *config);
 void		ft_exit(char *str);
-
 int			ft_usleep(useconds_t time);
+void		destroy_thread(t_philo *philo);
 
 // ARGS
 int			validate_param(char *str);
