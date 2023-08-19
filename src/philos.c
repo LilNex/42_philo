@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:32:01 by lilnex            #+#    #+#             */
-/*   Updated: 2023/08/18 00:05:37 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/19 01:44:23 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_philo	*init_philo(t_config *conf, int i)
 	t_philo	*p;
 
 	(void) conf;
-	p = ft_calloc(1, sizeof(t_philo));
+	p = malloc(1 * sizeof(t_philo));
 	if (!p)
 		return (p);
 	p->num = i;
@@ -45,7 +45,7 @@ void	join_philos(t_config *conf)
 	gettimeofday(&conf->start_date, NULL);
 	pthread_mutex_unlock(&conf->dead);
 	thread_checker(conf);
-	ft_free(conf);
+	free(conf);
 }
 
 void	create_philos(t_config *config)
@@ -53,26 +53,29 @@ void	create_philos(t_config *config)
 	int	i;
 
 	i = 0;
-	config->philos = ft_calloc(config->num_philos + 1, sizeof(t_philo *));
+	config->philos = malloc((config->num_philos + 1) * sizeof(t_philo *));
+	if (!config->philos)
+		return ;
 	while (i < config->num_philos)
 	{
 		config->philos[i] = init_philo(config, i);
 		i++;
 	}
+	config->philos[i] = NULL;
 	join_philos(config);
 }
 
-void destroy_thread(t_philo *philo)
+void	destroy_thread(t_philo *philo)
 {
 	if (!philo)
 		return ;
+
 	pthread_detach(philo->thread);
 	pthread_mutex_destroy(&philo->fork);
-	pthread_mutex_destroy(&philo->eat);
 	pthread_mutex_destroy(&philo->mut_last_eaten);
 }
 
-void destroy_config(t_config *config)
+void	destroy_config(t_config *config)
 {
 	int	i;
 
@@ -81,11 +84,10 @@ void destroy_config(t_config *config)
 	{
 		pthread_detach(config->philos[i]->thread);
 		pthread_mutex_destroy(&config->philos[i]->fork);
-		pthread_mutex_destroy(&config->philos[i]->eat);
 		pthread_mutex_destroy(&config->philos[i]->mut_last_eaten);
-		ft_free(config->philos[i++]);
+		free(config->philos[i++]);
 	}
-	ft_free(config->philos);
+	free(config->philos);
 	pthread_mutex_destroy(&config->dead);
 	pthread_mutex_destroy(&config->print);
 }

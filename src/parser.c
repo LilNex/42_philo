@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:53:25 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/17 23:53:47 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/19 01:33:59 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	validate_param(char *str)
 	i = 0;
 	while (str && str[i])
 	{
-		if (ft_isdigit(str[i]))
+		if (str[i] >= 48 && str[i] <= 57)
 			i++;
 		else
 			return (0);

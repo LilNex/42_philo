@@ -11,7 +11,12 @@
 # include <unistd.h>
 # include <pthread.h>
 # include <sys/time.h>
-# include "libft/libft.h"
+
+typedef struct s_list
+{
+	void			*content;
+	struct s_list	*next;
+}					t_list;
 
 typedef struct s_philo{
 	int				num;
@@ -37,6 +42,7 @@ typedef struct s_config{
 	t_philo			**philos;
 }					t_config;
 // UTILS
+void		destroy_config(t_config *config);
 void		print_config(t_config *config);
 long long	to_ms(struct timeval datetime);
 void		print_log(t_philo *philo, char *str);

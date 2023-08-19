@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:52:46 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/18 00:06:06 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/19 01:44:42 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_config	*init_config(void)
 {
 	t_config	*config;
 
-	config = ft_calloc(1, sizeof(t_config));
+	config = malloc(1 * sizeof(t_config));
 	config->number_meals = -1;
 	if (!config)
 		return (config);
@@ -34,7 +34,7 @@ int	is_all_meals_eaten(t_config *config)
 	count = 0;
 	if (config->number_meals != -1)
 	{
-		while (config->philos[i])
+		while (i < config->num_philos)
 		{
 			if (config->philos[i]->meals_eaten >= config->number_meals)
 				count++;
@@ -71,31 +71,21 @@ void	*thread_checker(void *conf)
 			i = 0;
 	}
 	i = 0;
-	while (config->philos[i])
-	{
-		destroy_thread(config->philos[i]);
-		ft_free(config->philos[i++]);
-	}
+	destroy_config(config);
+	// while (config->philos[i])
+	// {
+	// 	destroy_thread(config->philos[i]);
+	// 	free(config->philos[i++]);
+	// }
 	return (NULL);
-}
-
-void	join_thread_watcher(t_config *config)
-{
-	pthread_t	monitor;
-
-	pthread_create(&monitor, NULL, &thread_checker, config);
-	pthread_join(monitor, NULL);
-	printf("end monitor\n");
 }
 
 void	ft_exit(char *str)
 {
-	t_list	**gcol;
 
-	gcol = get_gcollector();
-	if (str)
-		ft_putstr_fd(str, 2);
-	ft_lstiter(*gcol, ft_free);
+	(void) str;
+	// if (str)
+		// ft_putstr_fd(str, 2);
 	exit(0);
 }
 
@@ -108,13 +98,14 @@ int	main(int argc, char **av)
 {
 	t_config	*config;
 
-	// atexit(f);
+	atexit(f);
 	config = init_config();
 	if (argc >= 4)
 	{
 		parse_args(av, config);
 		validate_args(config);
 		create_philos(config);
+		ft_exit(NULL);
 	}
 	else
 		printf("You must give minimum of args\n");
