@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lilnex <lilnex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:53:25 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/19 01:33:59 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/19 14:02:21 by lilnex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	parse_number(char *str)
 		nbr = nbr * 10 + ((int)str[i] - 48);
 		i++;
 	}
-	return (nbr);
+	return (nbr * signe);
 }
 
 void	parse_args(char **args, t_config *config)

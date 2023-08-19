@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philos.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lilnex <lilnex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:32:01 by lilnex            #+#    #+#             */
-/*   Updated: 2023/08/19 01:44:23 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/19 14:29:39 by lilnex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,13 @@ void	destroy_config(t_config *config)
 	i = 0;
 	while (config->philos[i])
 	{
-		pthread_detach(config->philos[i]->thread);
+		pthread_join(config->philos[i]->thread, NULL);
 		pthread_mutex_destroy(&config->philos[i]->fork);
 		pthread_mutex_destroy(&config->philos[i]->mut_last_eaten);
 		free(config->philos[i++]);
 	}
 	free(config->philos);
+	// pthread_mutex_unlock(&config->dead);
 	pthread_mutex_destroy(&config->dead);
 	pthread_mutex_destroy(&config->print);
 }

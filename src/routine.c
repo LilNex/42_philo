@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lilnex <lilnex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 19:29:29 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/19 01:49:02 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/19 15:44:28 by lilnex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ void	*philo_routine(void *conf)
 	philo = (t_philo *)conf;
 	while (1)
 	{
-		pthread_mutex_lock(&philo->config->dead);
-		pthread_mutex_unlock(&philo->config->dead);
+		// pthread_mutex_lock(&philo->config->dead);
+		// pthread_mutex_unlock(&philo->config->dead);
 		if (philo->num % 2 == 0)
 			take_fork(philo);
 		philo_sleep(philo);

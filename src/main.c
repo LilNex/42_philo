@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: lilnex <lilnex@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:52:46 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/19 01:44:42 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/19 15:44:10 by lilnex           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,10 @@ int	is_all_meals_eaten(t_config *config)
 	{
 		while (i < config->num_philos)
 		{
+			// pthread_mutex_lock(&config->philos[i]->mut_last_eaten);
 			if (config->philos[i]->meals_eaten >= config->number_meals)
 				count++;
+			// pthread_mutex_unlock(&config->philos[i]->mut_last_eaten);
 			i++;
 		}
 	}
@@ -63,14 +65,12 @@ void	*thread_checker(void *conf)
 	{
 		gettimeofday(&date_now, NULL);
 		while (i < config->num_philos)
-		{
-			routine_checker(config->philos[i], date_now);
-			i++;
-		}
+			routine_checker(config->philos[i++], date_now);
 		if (i >= config->num_philos)
 			i = 0;
 	}
 	i = 0;
+	// pthread_mutex_lock(&config->dead);
 	destroy_config(config);
 	// while (config->philos[i])
 	// {
@@ -100,6 +100,8 @@ int	main(int argc, char **av)
 
 	atexit(f);
 	config = init_config();
+	if (!config)
+		return (0);
 	if (argc >= 4)
 	{
 		parse_args(av, config);
@@ -108,5 +110,5 @@ int	main(int argc, char **av)
 		ft_exit(NULL);
 	}
 	else
-		printf("You must give minimum of args\n");
+		return(free(config), printf("You must give minimum of args\n"), 0);
 }
