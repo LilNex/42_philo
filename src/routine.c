@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 19:29:29 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/19 01:49:02 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/20 17:51:09 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ int	routine_checker(t_philo *philo, struct timeval date_now)
 		pthread_mutex_lock(&philo->config->dead);
 		print_log(philo, "has died");
 		pthread_mutex_lock(&philo->config->print);
+		pthread_mutex_unlock(&philo->config->philos[(philo->num + 1)
+			% philo->config->num_philos]->fork);
+		pthread_mutex_unlock(&philo->fork);
 		return (0);
 	}
 	return (1);

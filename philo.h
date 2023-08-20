@@ -1,10 +1,18 @@
-
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/20 17:58:04 by ichaiq            #+#    #+#             */
+/*   Updated: 2023/08/20 17:58:21 by ichaiq           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #ifndef PHILO_H
 
 # define PHILO_H
-
-
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -36,12 +44,13 @@ typedef struct s_config{
 	int				time_eat;
 	int				time_die;
 	int				number_meals;
+	int				exit;
 	pthread_mutex_t	print;
 	pthread_mutex_t	dead;
 	struct timeval	start_date;
 	t_philo			**philos;
 }					t_config;
-// UTILS
+
 void		destroy_config(t_config *config);
 void		print_config(t_config *config);
 long long	to_ms(struct timeval datetime);
@@ -55,6 +64,7 @@ int			is_all_meals_eaten(t_config *config);
 void		ft_exit(char *str);
 int			ft_usleep(useconds_t time);
 void		destroy_thread(t_philo *philo);
+void		lock_all_mutexs(t_config *config);
 
 // ARGS
 int			validate_param(char *str);

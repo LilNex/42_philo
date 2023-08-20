@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:52:46 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/19 01:44:42 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/20 17:59:19 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@ t_config	*init_config(void)
 
 	config = malloc(1 * sizeof(t_config));
 	config->number_meals = -1;
+	config->exit = 0;
 	if (!config)
 		return (config);
-	pthread_mutex_init(&config->print, NULL);
+	pthread_mutex_init(&config->print, NULL); 
 	pthread_mutex_init(&config->dead, NULL);
 	return (config);
 }
@@ -36,18 +37,18 @@ int	is_all_meals_eaten(t_config *config)
 	{
 		while (i < config->num_philos)
 		{
+			pthread_mutex_lock(&config->philos[i]->mut_last_eaten);
 			if (config->philos[i]->meals_eaten >= config->number_meals)
 				count++;
+			pthread_mutex_unlock(&config->philos[i]->mut_last_eaten);
 			i++;
 		}
 	}
 	else
 		return (0);
 	if (count == config->num_philos)
-	{
-		pthread_mutex_lock(&config->dead);
-		return (1);
-	}
+		return (pthread_mutex_lock(&config->dead),
+			pthread_mutex_lock(&config->dead), 1);
 	return (0);
 }
 
@@ -59,34 +60,17 @@ void	*thread_checker(void *conf)
 
 	i = 0;
 	config = (t_config *) conf;
-	while (1 && !is_all_meals_eaten(config))
+	while (1 && !is_all_meals_eaten(config) && !config->exit)
 	{
 		gettimeofday(&date_now, NULL);
 		while (i < config->num_philos)
-		{
-			routine_checker(config->philos[i], date_now);
-			i++;
-		}
+			if (!routine_checker(config->philos[i++], date_now))
+				config->exit = 1;
 		if (i >= config->num_philos)
 			i = 0;
 	}
-	i = 0;
 	destroy_config(config);
-	// while (config->philos[i])
-	// {
-	// 	destroy_thread(config->philos[i]);
-	// 	free(config->philos[i++]);
-	// }
 	return (NULL);
-}
-
-void	ft_exit(char *str)
-{
-
-	(void) str;
-	// if (str)
-		// ft_putstr_fd(str, 2);
-	exit(0);
 }
 
 void	f(void)

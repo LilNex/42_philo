@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:16:32 by lilnex            #+#    #+#             */
-/*   Updated: 2023/08/12 05:20:01 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/20 17:59:50 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,21 +37,29 @@ int	ft_usleep(useconds_t time)
 	return (0);
 }
 
-long int	get_current_tick(struct timeval now, t_philo *philo)
-{
-	return ((to_ms(now) - to_ms(philo->config->start_date)));
-}
-
 void	print_log(t_philo *philo, char *str)
 {
 	struct timeval	date_now;
 	long int		current_tick;
 
 	gettimeofday(&date_now, NULL);
-	current_tick = get_current_tick(date_now, philo);
+	current_tick = to_ms(date_now) - to_ms(philo->config->start_date);
 	pthread_mutex_lock(&philo->config->print);
 	printf("%ld | philo %d %s\n",
 		current_tick,
 		philo->num, str);
 	pthread_mutex_unlock(&philo->config->print);
+}
+
+void	lock_all_mutexs(t_config *config)
+{
+	int	i;
+
+	i = 0;
+	while (config->philos[i])
+	{
+		pthread_mutex_lock(&config->philos[i]->fork);
+		pthread_mutex_lock(&config->philos[i]->mut_last_eaten);
+		i++;
+	}
 }
