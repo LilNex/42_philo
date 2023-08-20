@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:52:46 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/20 17:59:19 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/20 18:13:57 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	is_all_meals_eaten(t_config *config)
 	else
 		return (0);
 	if (count == config->num_philos)
-		return (pthread_mutex_lock(&config->dead),
+		return (pthread_mutex_lock(&config->print),
 			pthread_mutex_lock(&config->dead), 1);
 	return (0);
 }
@@ -87,10 +87,11 @@ int	main(int argc, char **av)
 	if (argc >= 4)
 	{
 		parse_args(av, config);
-		validate_args(config);
+		if (!validate_args(config))
+			return (1);
 		create_philos(config);
-		ft_exit(NULL);
 	}
 	else
 		printf("You must give minimum of args\n");
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:53:25 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/20 17:59:33 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/20 18:13:44 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ int	validate_args(t_config *config)
 {
 	if (config->time_die < 60 || config->time_eat < 60
 		|| config->time_sleep < 60)
-		return (ft_exit("Time shouldn't be less than 60ms\n"), 0);
+		return (free(config), printf("Time shouldn't be less than 60ms\n"), 0);
+	if (config->num_philos > 200)
+		return (free(config),
+			printf("Philosophers shouldn't be more than 200\n"), 0);
 	return (1);
 }
 
