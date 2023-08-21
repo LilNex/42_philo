@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:32:01 by lilnex            #+#    #+#             */
-/*   Updated: 2023/08/20 17:59:42 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/21 01:32:57 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,16 @@ void	join_philos(t_config *conf)
 	t_philo	*philo;
 
 	count = 0;
-	pthread_mutex_lock(&conf->dead);
+	//pthread_mutex_lock(&conf->dead);
+	gettimeofday(&conf->start_date, NULL);
 	while (count < conf->num_philos)
 	{
 		philo = conf->philos[count++];
 		gettimeofday(&philo->start_date, NULL);
-		pthread_create(&philo->thread, NULL, &philo_routine, philo);
 		gettimeofday(&philo->last_eaten, NULL);
+		pthread_create(&philo->thread, NULL, &philo_routine, philo);
 	}
-	gettimeofday(&conf->start_date, NULL);
-	pthread_mutex_unlock(&conf->dead);
+	//pthread_mutex_unlock(&conf->dead);
 	thread_checker(conf);
 	free(conf);
 }
@@ -79,10 +79,14 @@ void	destroy_config(t_config *config)
 	int	i;
 
 	i = 0;
-	lock_all_mutexs(config);
+	// lock_all_mutexs(config);
 	while (config->philos[i])
 	{
-		pthread_detach(config->philos[i]->thread);
+		pthread_detach(config->philos[i++]->thread);
+	}
+	i = 0;
+	while (config->philos[i])
+	{
 		pthread_mutex_destroy(&config->philos[i]->fork);
 		pthread_mutex_destroy(&config->philos[i]->mut_last_eaten);
 		free(config->philos[i++]);

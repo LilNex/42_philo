@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:53:25 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/20 18:13:44 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/20 19:10:58 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,11 @@ void	parse_args(char **args, t_config *config)
 	i = 1;
 	while (args[i])
 		if (!validate_param(args[i++]))
+		{
+			printf("Arg is invalid\n");
 			return ;
+			
+		}
 	config->num_philos = parse_number(args[1]);
 	config->time_die = parse_number(args[2]);
 	config->time_eat = parse_number(args[3]);

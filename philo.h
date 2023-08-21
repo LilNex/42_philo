@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 17:58:04 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/20 17:58:21 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/21 01:32:10 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void		ft_exit(char *str);
 int			ft_usleep(useconds_t time);
 void		destroy_thread(t_philo *philo);
 void		lock_all_mutexs(t_config *config);
+int			is_exited(t_config *config);
 
 // ARGS
 int			validate_param(char *str);

@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:52:46 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/20 18:13:57 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/21 02:12:39 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,12 @@ int	is_all_meals_eaten(t_config *config)
 	else
 		return (0);
 	if (count == config->num_philos)
-		return (pthread_mutex_lock(&config->print),
-			pthread_mutex_lock(&config->dead), 1);
+	{
+		pthread_mutex_lock(&config->dead);
+		config->exit = 1;
+		pthread_mutex_unlock(&config->dead);
+		return (config->exit);
+	}
 	return (0);
 }
 
@@ -60,9 +64,12 @@ void	*thread_checker(void *conf)
 
 	i = 0;
 	config = (t_config *) conf;
+	pthread_mutex_lock(&config->dead);
 	while (1 && !is_all_meals_eaten(config) && !config->exit)
 	{
+		pthread_mutex_unlock(&config->dead);
 		gettimeofday(&date_now, NULL);
+		// pthread_mutex_unlock(&config->dead);
 		while (i < config->num_philos)
 			if (!routine_checker(config->philos[i++], date_now))
 				config->exit = 1;
@@ -84,7 +91,7 @@ int	main(int argc, char **av)
 
 	atexit(f);
 	config = init_config();
-	if (argc >= 4)
+	if (argc >= 5)
 	{
 		parse_args(av, config);
 		if (!validate_args(config))
@@ -93,5 +100,7 @@ int	main(int argc, char **av)
 	}
 	else
 		printf("You must give minimum of args\n");
+	
+	
 	return (0);
 }

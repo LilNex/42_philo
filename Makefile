@@ -1,6 +1,6 @@
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Werror -Wextra #-g3 -fsanitize=thread
+CFLAGS = -Wall -Werror -Wextra# -fsanitize=address
 SRCDIR = src
 OBJDIR = obj
 SRCS = $(shell find $(SRCDIR) -type f -name '*.c')
@@ -10,7 +10,9 @@ INCLUD = ./philo.h
 .PHONY: all clean fclean re
 
 all: $(NAME)
-	./philo 4 410 200 200 3
+
+run: all
+	./philo 4 410 200 200
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLUD)
 	@mkdir -p $(@D)
