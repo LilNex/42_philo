@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/20 17:58:04 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/21 01:32:10 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/21 21:35:39 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <pthread.h>
+# include <limits.h>
 # include <sys/time.h>
 
 typedef struct s_list
@@ -33,7 +34,6 @@ typedef struct s_philo{
 	struct timeval	last_eaten;
 	int				meals_eaten;
 	pthread_mutex_t	fork;
-	pthread_mutex_t	eat;
 	pthread_mutex_t	mut_last_eaten;
 	struct s_config	*config;
 }					t_philo;
@@ -69,7 +69,8 @@ int			is_exited(t_config *config);
 
 // ARGS
 int			validate_param(char *str);
-void		parse_args(char **args, t_config *config);
+int			parse_args(char **args, t_config *config);
 int			validate_args(t_config *config);
 void		create_philos(t_config *philo);
+int			set_exit(t_config *config, int value);
 #endif

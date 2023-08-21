@@ -1,7 +1,7 @@
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Werror -Wextra# -fsanitize=address
-SRCDIR = src
+CFLAGS = -Wall -Werror -Wextra -g3 # -fsanitize=address
+SRCDIR = ./
 OBJDIR = obj
 SRCS = $(shell find $(SRCDIR) -type f -name '*.c')
 OBJECTS = $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(SRCS))

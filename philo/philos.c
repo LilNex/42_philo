@@ -6,11 +6,11 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:32:01 by lilnex            #+#    #+#             */
-/*   Updated: 2023/08/21 02:18:34 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/21 21:28:35 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "philo.h"
 
 t_philo	*init_philo(t_config *conf, int i)
 {
@@ -34,7 +34,6 @@ void	join_philos(t_config *conf)
 	t_philo	*philo;
 
 	count = 0;
-	//pthread_mutex_lock(&conf->dead);
 	gettimeofday(&conf->start_date, NULL);
 	while (count < conf->num_philos)
 	{
@@ -43,7 +42,6 @@ void	join_philos(t_config *conf)
 		gettimeofday(&philo->last_eaten, NULL);
 		pthread_create(&philo->thread, NULL, &philo_routine, philo);
 	}
-	//pthread_mutex_unlock(&conf->dead);
 	thread_checker(conf);
 	free(conf);
 }
@@ -63,15 +61,6 @@ void	create_philos(t_config *config)
 	}
 	config->philos[i] = NULL;
 	join_philos(config);
-}
-
-void	destroy_thread(t_philo *philo)
-{
-	if (!philo)
-		return ;
-	pthread_detach(philo->thread);
-	pthread_mutex_destroy(&philo->fork);
-	pthread_mutex_destroy(&philo->mut_last_eaten);
 }
 
 void	destroy_config(t_config *config)

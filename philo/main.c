@@ -6,11 +6,11 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:52:46 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/21 02:12:39 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/21 21:41:06 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../philo.h"
+#include "philo.h"
 
 t_config	*init_config(void)
 {
@@ -24,6 +24,29 @@ t_config	*init_config(void)
 	pthread_mutex_init(&config->print, NULL); 
 	pthread_mutex_init(&config->dead, NULL);
 	return (config);
+}
+
+int	is_exited(t_config *config)
+{
+	int	val;
+
+	val = 0;
+	if (pthread_mutex_lock(&config->dead))
+		return (1);
+	val = config->exit;
+	if (pthread_mutex_unlock(&config->dead))
+		return (1);
+	return (val);
+}
+
+int	set_exit(t_config *config, int value)
+{
+	if (pthread_mutex_lock(&config->dead))
+		return (1);
+	config->exit = value;
+	if (pthread_mutex_unlock(&config->dead))
+		return (1);
+	return (value);
 }
 
 int	is_all_meals_eaten(t_config *config)
@@ -47,37 +70,8 @@ int	is_all_meals_eaten(t_config *config)
 	else
 		return (0);
 	if (count == config->num_philos)
-	{
-		pthread_mutex_lock(&config->dead);
-		config->exit = 1;
-		pthread_mutex_unlock(&config->dead);
-		return (config->exit);
-	}
+		return (set_exit(config, 1));
 	return (0);
-}
-
-void	*thread_checker(void *conf)
-{
-	int				i;
-	struct timeval	date_now;
-	t_config		*config;
-
-	i = 0;
-	config = (t_config *) conf;
-	pthread_mutex_lock(&config->dead);
-	while (1 && !is_all_meals_eaten(config) && !config->exit)
-	{
-		pthread_mutex_unlock(&config->dead);
-		gettimeofday(&date_now, NULL);
-		// pthread_mutex_unlock(&config->dead);
-		while (i < config->num_philos)
-			if (!routine_checker(config->philos[i++], date_now))
-				config->exit = 1;
-		if (i >= config->num_philos)
-			i = 0;
-	}
-	destroy_config(config);
-	return (NULL);
 }
 
 void	f(void)
@@ -93,14 +87,11 @@ int	main(int argc, char **av)
 	config = init_config();
 	if (argc >= 5)
 	{
-		parse_args(av, config);
-		if (!validate_args(config))
-			return (1);
+		if (!parse_args(av, config) || !validate_args(config))
+			return (free(config), 1);
 		create_philos(config);
 	}
 	else
 		printf("You must give minimum of args\n");
-	
-	
 	return (0);
 }
