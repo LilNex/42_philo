@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:32:01 by lilnex            #+#    #+#             */
-/*   Updated: 2023/08/21 01:32:57 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/21 02:18:34 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,8 @@ void	destroy_config(t_config *config)
 	int	i;
 
 	i = 0;
-	// lock_all_mutexs(config);
 	while (config->philos[i])
-	{
-		pthread_detach(config->philos[i++]->thread);
-	}
+		pthread_join(config->philos[i++]->thread, NULL);
 	i = 0;
 	while (config->philos[i])
 	{
