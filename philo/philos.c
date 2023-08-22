@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:32:01 by lilnex            #+#    #+#             */
-/*   Updated: 2023/08/22 00:53:16 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/22 01:17:27 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@ t_philo	*init_philo(t_config *conf, int i)
 	p->num = i;
 	p->config = conf;
 	p->meals_eaten = 0;
-	pthread_mutex_init(&p->fork, NULL);
-	pthread_mutex_init(&p->mut_last_eaten, NULL);
+	if (pthread_mutex_init(&p->fork, NULL))
+		return (NULL);
+	if (pthread_mutex_init(&p->mut_last_eaten, NULL))
+		return (NULL);
 	return (p);
 }
 
@@ -57,6 +59,11 @@ void	create_philos(t_config *config)
 	while (i < config->num_philos)
 	{
 		config->philos[i] = init_philo(config, i);
+		if (!config->philos[i])
+		{
+			free(config);
+			return ;
+		}
 		i++;
 	}
 	config->philos[i] = NULL;

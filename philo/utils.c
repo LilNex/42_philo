@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 17:16:32 by lilnex            #+#    #+#             */
-/*   Updated: 2023/08/21 21:40:14 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/22 01:19:23 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	print_log(t_philo *philo, char *str)
 	long int		current_tick;
 
 	gettimeofday(&date_now, NULL);
-	current_tick = to_ms(date_now) - to_ms(philo->config->start_date);
+	current_tick = to_ms(date_now) - to_ms(philo->start_date);
 	pthread_mutex_lock(&philo->config->print);
 	if (is_exited(philo->config))
 	{
