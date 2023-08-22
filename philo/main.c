@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 02:52:46 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/21 21:41:06 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/22 01:13:42 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,10 @@ int	is_all_meals_eaten(t_config *config)
 	return (0);
 }
 
-void	f(void)
-{
-	system("leaks philo");
-}
-
 int	main(int argc, char **av)
 {
 	t_config	*config;
 
-	atexit(f);
 	config = init_config();
 	if (argc >= 5)
 	{
@@ -92,6 +86,7 @@ int	main(int argc, char **av)
 		create_philos(config);
 	}
 	else
-		printf("You must give minimum of args\n");
+		printf("Usage: (time must be in milliseconds)\n./philo num_of_philos time_to_die time_to_eat \
+time_to_sleep [meals_must_eat] \n");
 	return (0);
 }

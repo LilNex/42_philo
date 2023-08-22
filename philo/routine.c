@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/02 19:29:29 by ichaiq            #+#    #+#             */
-/*   Updated: 2023/08/21 21:40:42 by ichaiq           ###   ########.fr       */
+/*   Updated: 2023/08/22 01:11:14 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,14 @@ void	philo_sleep(t_philo *philo)
 void	take_fork(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->fork);
-	pthread_mutex_lock(&philo->config->philos[(philo->num + 1)
-		% philo->config->num_philos]->fork);
+	if (((philo->num + 1) % philo->config->num_philos) != philo->num)
+		pthread_mutex_lock(&philo->config->philos[(philo->num + 1)
+			% philo->config->num_philos]->fork);
+	else
+	{
+		pthread_mutex_unlock(&philo->fork);
+		return ;
+	}
 	print_log(philo, "has taken fork");
 	print_log(philo, "is eating");
 	pthread_mutex_lock(&philo->mut_last_eaten);
@@ -44,14 +50,12 @@ void	*thread_checker(void *conf)
 
 	i = 0;
 	config = (t_config *) conf;
-	pthread_mutex_lock(&config->dead);
-	while (1 && !is_all_meals_eaten(config) && !config->exit)
+	while (1 && !is_all_meals_eaten(config) && !is_exited(config))
 	{
-		pthread_mutex_unlock(&config->dead);
 		gettimeofday(&date_now, NULL);
 		while (i < config->num_philos)
 			if (!routine_checker(config->philos[i++], date_now))
-				config->exit = 1;
+				return (set_exit(config, 1), destroy_config(config), NULL);
 		if (i >= config->num_philos)
 			i = 0;
 	}

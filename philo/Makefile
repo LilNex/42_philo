@@ -1,6 +1,6 @@
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g3 # -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra# -g3 -fsanitize=thread
 SRCDIR = ./
 OBJDIR = obj
 SRCS = $(shell find $(SRCDIR) -type f -name '*.c')
@@ -20,7 +20,6 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLUD)
 
 $(NAME): $(OBJECTS) $(LIB)
 	$(CC) $(CFLAGS) $(OBJECTS) $(LIB) -o $(NAME)
-
 
 clean:
 	rm -rf $(OBJDIR)
